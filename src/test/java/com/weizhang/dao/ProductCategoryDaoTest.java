@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -29,5 +32,11 @@ public class ProductCategoryDaoTest {
         productCategory.setCategoryName("杰克逊");
         productCategory.setCategoryType(2);
         productCategoryDao.save(productCategory);
+    }
+
+    @Test
+    public void findByCategoryTypeInTest(){
+        List<ProductCategory> productCategoryList = productCategoryDao.findByCategoryTypeIn(Arrays.asList(1, 2, 3));
+        System.out.print(productCategoryList.toString());
     }
 }
