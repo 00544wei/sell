@@ -7,6 +7,7 @@ import com.weizhang.service.ProductService;
 import com.weizhang.vo.ProductInfoVO;
 import com.weizhang.vo.ProductVO;
 import com.weizhang.vo.ResultVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,18 +35,26 @@ public class BuyerProductController {
         List<Integer> categotyTypeList = productInfoList.stream().map(e -> e.getCategoryType()).collect(Collectors.toList());
         List<ProductCategory> productCategoryList = categoryService.findByCategoryTypeIn(categotyTypeList);
         //数据拼装
+        List<ProductVO> data = new ArrayList<ProductVO>();
+        List<ProductInfoVO> productInfoVOList = new ArrayList<ProductInfoVO>();
         for (ProductCategory productCategory: productCategoryList) {
             ProductVO productVO = new ProductVO();
-            
+            productVO.setCategoryType(productCategory.getCategoryType());
+            productVO.setCategoryName(productCategory.getCategoryName());
+
+            for (ProductInfo productInfo : productInfoList) {
+                ProductInfoVO productInfoVO = new ProductInfoVO();
+                BeanUtils.copyProperties(productInfo, productInfoVO);
+                productInfoVOList.add(productInfoVO);
+            }
+            productVO.setProductInfoVOList(productInfoVOList);
+            data.add(productVO);
         }
         //
         ResultVO result = new ResultVO();
         result.setCode(1);
         result.setMsg("不好意思，没有数据");
-        ProductVO productVO = new ProductVO();
-        ProductInfoVO productInfoVO = new ProductInfoVO();
-        productVO.setProductInfoVOList(Arrays.asList(productInfoVO));
-        result.setData(productVO);
+        result.setData(data);
         return result;
     }
 
