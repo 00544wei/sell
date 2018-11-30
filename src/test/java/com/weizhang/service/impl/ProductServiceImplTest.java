@@ -23,7 +23,7 @@ public class ProductServiceImplTest {
 
     @Test
     public void findOne() {
-        ProductInfo productInfo = productService.findOne("123456");
+        ProductInfo productInfo = productService.findOne("1");
         System.out.print(productInfo.toString());
     }
 

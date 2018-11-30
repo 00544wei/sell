@@ -32,25 +32,25 @@ public class BuyerProductController {
         //查询所有的上架商品
         List<ProductInfo> productInfoList = productService.findpUpAll();
         //查询类目 一次性查询
-        List<Integer> categotyTypeList = productInfoList.stream().map(e -> e.getCategoryType()).collect(Collectors.toList());
+//        List<Integer> categotyTypeList = productInfoList.stream().map(e -> e.getCategoryType()).collect(Collectors.toList());
+        List<Integer> categotyTypeList = productInfoList.stream().map(e -> e.getCategoryType()).distinct().collect(Collectors.toList());
         List<ProductCategory> productCategoryList = categoryService.findByCategoryTypeIn(categotyTypeList);
         //数据拼装
         List<ProductVO> data = new ArrayList<ProductVO>();
-        List<ProductInfoVO> productInfoVOList = new ArrayList<ProductInfoVO>();
-        for (ProductCategory productCategory: productCategoryList) {
+        //
+        for (Integer cateroryType : categotyTypeList) {
             ProductVO productVO = new ProductVO();
-            productVO.setCategoryType(productCategory.getCategoryType());
-            productVO.setCategoryName(productCategory.getCategoryName());
-
+            List<ProductInfoVO> productInfoVOList = new ArrayList<ProductInfoVO>();
             for (ProductInfo productInfo : productInfoList) {
-                ProductInfoVO productInfoVO = new ProductInfoVO();
-                BeanUtils.copyProperties(productInfo, productInfoVO);
-                productInfoVOList.add(productInfoVO);
+                if (cateroryType.equals(productInfo.getCategoryType())){
+                    ProductInfoVO productInfoVO = new ProductInfoVO();
+                    BeanUtils.copyProperties(productInfo, productInfoVO);
+                    productInfoVOList.add(productInfoVO);
+                }
             }
             productVO.setProductInfoVOList(productInfoVOList);
             data.add(productVO);
         }
-        //
         ResultVO result = new ResultVO();
         result.setCode(1);
         result.setMsg("不好意思，没有数据");
