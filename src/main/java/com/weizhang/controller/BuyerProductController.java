@@ -4,6 +4,7 @@ import com.weizhang.entity.ProductCategory;
 import com.weizhang.entity.ProductInfo;
 import com.weizhang.service.ProductCategoryService;
 import com.weizhang.service.ProductService;
+import com.weizhang.util.ResultVOUtils;
 import com.weizhang.vo.ProductInfoVO;
 import com.weizhang.vo.ProductVO;
 import com.weizhang.vo.ResultVO;
@@ -38,11 +39,13 @@ public class BuyerProductController {
         //数据拼装
         List<ProductVO> data = new ArrayList<ProductVO>();
         //
-        for (Integer cateroryType : categotyTypeList) {
+        for (ProductCategory cateroryType : productCategoryList) {
             ProductVO productVO = new ProductVO();
+            productVO.setCategoryName(cateroryType.getCategoryName());
+            productVO.setCategoryType(cateroryType.getCategoryType());
             List<ProductInfoVO> productInfoVOList = new ArrayList<ProductInfoVO>();
             for (ProductInfo productInfo : productInfoList) {
-                if (cateroryType.equals(productInfo.getCategoryType())){
+                if (cateroryType.getCategoryType().equals(productInfo.getCategoryType())){
                     ProductInfoVO productInfoVO = new ProductInfoVO();
                     BeanUtils.copyProperties(productInfo, productInfoVO);
                     productInfoVOList.add(productInfoVO);
@@ -51,11 +54,7 @@ public class BuyerProductController {
             productVO.setProductInfoVOList(productInfoVOList);
             data.add(productVO);
         }
-        ResultVO result = new ResultVO();
-        result.setCode(1);
-        result.setMsg("不好意思，没有数据");
-        result.setData(data);
-        return result;
+        return ResultVOUtils.success(data);
     }
 
 
