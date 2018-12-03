@@ -1,5 +1,6 @@
 package com.weizhang.service;
 
+import com.weizhang.dto.CartDTO;
 import com.weizhang.entity.ProductInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,5 +32,7 @@ public interface ProductService {
     public ProductInfo save(ProductInfo productInfo);
 
     //加库存
+    public void increaseStock(List<CartDTO> cartDTOList);
     //减库存
+    public void decreaseStock(List<CartDTO> cartDTOList);
 }
