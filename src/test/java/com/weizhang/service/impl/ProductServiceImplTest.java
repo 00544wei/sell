@@ -56,4 +56,13 @@ public class ProductServiceImplTest {
         ProductInfo result = productService.save(productInfo);
         System.out.println(result);
     }
+
+    @Test
+    public void increaseStock() {
+    }
+
+    @Test
+    public void decreaseStock() {
+//        productService.decreaseStock();
+    }
 }

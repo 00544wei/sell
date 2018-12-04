@@ -14,6 +14,7 @@ import com.weizhang.util.GenerateKeyUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderMasterServiceImpl implements OrderMasterService {
     @Autowired
     private ProductServiceImpl productService;
@@ -39,19 +41,19 @@ public class OrderMasterServiceImpl implements OrderMasterService {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXISTS);
             }
             //计算总价
-            orderAmount = orderDetail.getProductPrice().multiply(new BigDecimal(orderDetail.getProductQuantity()))
+            orderAmount = productInfo.getProductPrice().multiply(new BigDecimal(orderDetail.getProductQuantity()))
                 .add(orderAmount);
             //写入订单数据库  orderMaster orderDetail
+            BeanUtils.copyProperties(productInfo, orderDetail);
             orderDetail.setDetailId(GenerateKeyUtils.generateUniqueKey());
             orderDetail.setOrderId(orderId);
-            BeanUtils.copyProperties(productInfo, orderDetail);
             orderDetailDao.save(orderDetail);
         }
 
         OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDTO, orderMaster);
         orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
-        BeanUtils.copyProperties(orderDTO, orderMaster);
         orderMasterDao.save(orderMaster);
         //扣库存
         List<CartDTO> cartDTOList = orderDTO.getOrderDetailList().stream().map(e-> new CartDTO(e.getProductId(), e.getProductQuantity())).collect(Collectors.toList());
