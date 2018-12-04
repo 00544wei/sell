@@ -3,6 +3,7 @@ package com.weizhang.service.impl;
 import com.weizhang.dto.OrderDTO;
 import com.weizhang.entity.OrderDetail;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class OrderMasterServiceImplTest {
         orderDetail.setProductId("1");
         orderDetail.setProductQuantity(2);
         orderDetailList.add(orderDetail);
+
+        OrderDetail orderDetail1 = new OrderDetail();
+        orderDetail1.setProductId("3");
+        orderDetail1.setProductQuantity(3);
+        orderDetailList.add(orderDetail1);
         orderDTO.setOrderDetailList(orderDetailList);
 
         OrderDTO result = orderMasterService.create(orderDTO);
@@ -46,6 +52,8 @@ public class OrderMasterServiceImplTest {
 
     @Test
     public void findOne() {
+        OrderDTO orderDTO = orderMasterService.findOne("1543895064412425746");
+        Assert.assertNotNull(orderDTO);
     }
 
     @Test

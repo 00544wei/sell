@@ -13,13 +13,16 @@ import com.weizhang.service.OrderMasterService;
 import com.weizhang.util.GenerateKeyUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,9 +64,27 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         return orderDTO;
     }
 
+    /**
+     * 查询单个订单
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderDTO findOne(String orderId) {
-        return null;
+        Optional<OrderMaster> orderMaster = orderMasterDao.findById(orderId);
+        if (orderMaster.get() == null){
+            throw new SellException(ResultEnum.ORDER_NOT_EXISTS);
+        }
+
+        List<OrderDetail> orderDetailList = orderDetailDao.findByOrderId(orderId);
+        if (CollectionUtils.isEmpty(orderDetailList)){
+            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXISTS);
+        }
+
+        OrderDTO orderDTO = new OrderDTO();
+        BeanUtils.copyProperties(orderMaster, orderDTO);
+        orderDTO.setOrderDetailList(orderDetailList);
+        return orderDTO;
     }
 
     @Override
