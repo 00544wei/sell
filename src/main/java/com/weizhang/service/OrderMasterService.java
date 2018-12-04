@@ -2,6 +2,7 @@ package com.weizhang.service;
 
 import com.weizhang.dto.OrderDTO;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface OrderMasterService {
     public OrderDTO findOne(String orderId);
 
     /*查询订单列表*/
-    public List<OrderDTO> findList(String buyerOpenid, Pageable pageable);
+    public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable);
     /*取消订单*/
     public OrderDTO cancel(OrderDTO orderDTO);
     /*支付订单*/

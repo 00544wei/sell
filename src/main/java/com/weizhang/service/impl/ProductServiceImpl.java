@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +43,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void increaseStock(List<CartDTO> cartDTOList) {
+        for (CartDTO cartDTO: cartDTOList) {
+           Optional<ProductInfo> productInfo = productInfoDao.findById(cartDTO.getProductId());
+           if (productInfo.get() == null){
+               throw new SellException(ResultEnum.PRODUCT_NOT_EXISTS);
+           }
 
+           Integer number = productInfo.get().getProductStock() + cartDTO.getProductQuantity();
+           productInfo.get().setProductStock(number);
+           productInfoDao.save(productInfo.get());
+        }
     }
 
     @Override
+    @Transactional
     public void decreaseStock(List<CartDTO> cartDTOList) {
         for (CartDTO cartDTO: cartDTOList) {
             Optional<ProductInfo> productInfo = productInfoDao.findById(cartDTO.getProductId());
