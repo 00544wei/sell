@@ -1,5 +1,6 @@
 package com.weizhang.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.weizhang.entity.OrderDetail;
 import com.weizhang.entity.OrderMaster;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
     //订单ID
     private String orderId;

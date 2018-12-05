@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.transform.Result;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +68,22 @@ public class BuyerOrderController {
         return ResultVOUtils.success(orderDTOPage.getContent());
     }
     //查看详情
-
+    @RequestMapping("/detail")
+    public ResultVO<OrderDTO> detail(@RequestParam("openid") String openid,
+                                     @RequestParam("orderId") String orderId){
+        //TODO
+        OrderDTO orderDTO = orderMasterService.findOne(orderId);
+        return ResultVOUtils.success(orderDTO);
+    }
     //支付订单
 
     //取消订单
+    @PostMapping("/cancel")
+    public ResultVO<OrderDTO> cancel(@RequestParam("openid") String openid,
+                                     @RequestParam("orderId") String orderId){
+        //TODO
+        OrderDTO orderDTO = orderMasterService.findOne(orderId);
+        orderMasterService.cancel(orderDTO);
+        return ResultVOUtils.success();
+    }
 }

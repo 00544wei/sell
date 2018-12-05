@@ -91,7 +91,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         }
 
         OrderDTO orderDTO = new OrderDTO();
-        BeanUtils.copyProperties(orderMaster, orderDTO);
+        BeanUtils.copyProperties(orderMaster.get(), orderDTO);
         orderDTO.setOrderDetailList(orderDetailList);
         return orderDTO;
     }
