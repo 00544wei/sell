@@ -1,6 +1,7 @@
 package com.weizhang;
 
 import com.weizhang.dao.ProductCategoryDao;
+import com.weizhang.entity.ProductCategory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class SellApplicationTests {
     ProductCategoryDao productCategoryDao;
     @Test
     public void contextLoads() {
-        Optional optional = productCategoryDao.findById(1);
+        Optional<ProductCategory> optional = productCategoryDao.findById(1);
 
     }
 

@@ -63,8 +63,8 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         }
 
         OrderMaster orderMaster = new OrderMaster();
+        orderDTO.setOrderId(orderId);
         BeanUtils.copyProperties(orderDTO, orderMaster);
-        orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
         orderMasterDao.save(orderMaster);
         //扣库存
@@ -91,7 +91,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         }
 
         OrderDTO orderDTO = new OrderDTO();
-        BeanUtils.copyProperties(orderMaster.get(), orderDTO);
+        BeanUtils.copyProperties(orderMaster, orderDTO);
         orderDTO.setOrderDetailList(orderDetailList);
         return orderDTO;
     }
