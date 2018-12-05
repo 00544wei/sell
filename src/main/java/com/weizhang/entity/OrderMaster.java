@@ -4,16 +4,18 @@ import com.weizhang.enu.OrderStatusEnum;
 import com.weizhang.enu.PayStatusEnum;
 import com.weizhang.enu.ProductStatusEnum;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
+@DynamicUpdate
 public class OrderMaster {
     //订单ID
     @Id
