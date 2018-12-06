@@ -5,6 +5,7 @@ import com.weizhang.dto.OrderDTO;
 import com.weizhang.enu.ResultEnum;
 import com.weizhang.exception.SellException;
 import com.weizhang.form.OrderForm;
+import com.weizhang.service.BuyerService;
 import com.weizhang.service.impl.OrderMasterServiceImpl;
 import com.weizhang.util.ResultVOUtils;
 import com.weizhang.vo.ResultVO;
@@ -30,6 +31,8 @@ public class BuyerOrderController {
 
     @Autowired
     private OrderMasterServiceImpl orderMasterService;
+    @Autowired
+    private BuyerService buyerService;
 
     //创建订单
     @PostMapping("/create")
@@ -71,8 +74,7 @@ public class BuyerOrderController {
     @RequestMapping("/detail")
     public ResultVO<OrderDTO> detail(@RequestParam("openid") String openid,
                                      @RequestParam("orderId") String orderId){
-        //TODO
-        OrderDTO orderDTO = orderMasterService.findOne(orderId);
+        OrderDTO orderDTO = buyerService.findOne(openid, orderId);
         return ResultVOUtils.success(orderDTO);
     }
     //支付订单
@@ -81,7 +83,6 @@ public class BuyerOrderController {
     @PostMapping("/cancel")
     public ResultVO<OrderDTO> cancel(@RequestParam("openid") String openid,
                                      @RequestParam("orderId") String orderId){
-        //TODO
         OrderDTO orderDTO = orderMasterService.findOne(orderId);
         orderMasterService.cancel(orderDTO);
         return ResultVOUtils.success();
