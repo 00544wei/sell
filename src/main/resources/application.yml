@@ -15,3 +15,7 @@ logging:
   pattern:
     console: "%d - %msg%n"
   path: /var/log/tomcat
+
+wechat:
+  appId: wxc6ba170071d09ff1
+  appSecret: 03edf6db250d4fa91eea239dd51aec11
