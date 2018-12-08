@@ -18,6 +18,7 @@ public enum ResultEnum {
     PARAM_ERROR(30, "参数错误"),
 
     CART_EMPTY(40, "购物车为空"),
+    SCAN_CODE_FAIL(50, "扫码失败"),
     ;
 
     private Integer code;
