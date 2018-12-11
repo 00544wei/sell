@@ -20,6 +20,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,23 +31,31 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/wechat")
+@RequestMapping("/wx")
 @Slf4j
 public class WxController {
 //    private static String APPID = "wxc6ba170071d09ff1";
 //
 //    private static String APPSECRET = "03edf6db250d4fa91eea239dd51aec11";
 
-    private static String APPID = "wxfef232c784236ebc";
+    private static String APPID = "wxc6ba170071d09ff1";
 
-    private static String APPSECRET = "aacdfcfc7b5fcc2fa52d2f0e609d9ae8";
+    private static String APPSECRET = "03edf6db250d4fa91eea239dd51aec11";
 
     @RequestMapping("/auth")
     public void auth(@RequestParam("code") String code,
                      @RequestParam("state") String state){
         log.info("进入auth方法");
         log.info("获取到的参数是：code={},state={}", code, state);
+        String accessTokenUrlTem = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code"
+                .replace("APPID", APPID).replace("SECRET", APPSECRET).replace("CODE", code);
+        log.info("获取ACCESS_TOKEN的url是:{}", accessTokenUrlTem);
+        RestTemplate restTemplate = new RestTemplate();
+        String accessTokenResult = restTemplate.getForObject(accessTokenUrlTem, String.class);
+        log.info("返回结果是,ACCESSTOKEN相关的信息：result={}", accessTokenResult);
+
     }
+
     @RequestMapping("/scanCode")
     public void scanCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
         String signature = request.getParameter("signature");
@@ -63,7 +72,6 @@ public class WxController {
             out.print(echostr);
         }
     }
-
 
 
 }

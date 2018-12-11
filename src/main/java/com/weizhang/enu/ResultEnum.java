@@ -19,6 +19,8 @@ public enum ResultEnum {
 
     CART_EMPTY(40, "购物车为空"),
     SCAN_CODE_FAIL(50, "扫码失败"),
+
+    WECHAT_AUTHORIZE_ERROR(100, "微信网页授权失败"),
     ;
 
     private Integer code;
